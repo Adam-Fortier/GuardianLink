@@ -1,104 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
 
-    // Fetch all users
     useEffect(() => {
         api.get('/admin/users')
-            .then((res) => {
-                setUsers(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to fetch users.');
-                setLoading(false);
-            });
+            .then((res) => setUsers(res.data))
+            .catch(() => alert('Failed to fetch users.'));
     }, []);
 
-    // Delete a user
-    const deleteUser = (id) => {
+    const handleRoleChange = (id, role) => {
+        api.patch(`/admin/users/${id}`, { role })
+            .then(() => setUsers(users.map((u) => (u.id === id ? { ...u, role } : u))))
+            .catch(() => alert('Failed to update role.'));
+    };
+
+    const handleDelete = (id) => {
         api.delete(`/admin/users/${id}`)
-            .then(() => {
-                setUsers(users.filter((user) => user.id !== id));
-                setMessage('User deleted successfully.');
-            })
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to delete user.');
-            });
+            .then(() => setUsers(users.filter((u) => u.id !== id)))
+            .catch(() => alert('Failed to delete user.'));
     };
-
-    // Change user role
-    const changeRole = (id, newRole) => {
-        api.patch(`/admin/users/${id}/role`, { role: newRole })
-            .then(() => {
-                setUsers(users.map((user) => (user.id === id ? { ...user, role: newRole } : user)));
-                setMessage('Role updated successfully.');
-            })
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to update role.');
-            });
-    };
-
-    // Reset user password
-    const resetPassword = (id) => {
-        const newPassword = prompt('Enter new password:');
-        if (!newPassword) return;
-
-        api.patch(`/admin/users/${id}/password`, { newPassword })
-            .then(() => setMessage('Password reset successfully.'))
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to reset password.');
-            });
-    };
-
-    if (loading) return <p>Loading users...</p>;
-    if (error) return <p className="error-message">{error}</p>;
 
     return (
-        <div>
-            <h1>Admin Dashboard</h1>
-            {message && <p className="success-message">{message}</p>}
-            {error && <p className="error-message">{error}</p>}
-            <table border="1" style={{ width: '100%', textAlign: 'left' }}>
+        <div className="max-w-4xl mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+            <table className="w-full border-collapse border border-gray-300">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
+                        <th className="border border-gray-300 p-2">Name</th>
+                        <th className="border border-gray-300 p-2">Email</th>
+                        <th className="border border-gray-300 p-2">Role</th>
+                        <th className="border border-gray-300 p-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((user) => (
                         <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.Firstname}</td>
-                            <td>{user.Lastname}</td>
-                            <td>{user.email}</td>
-                            <td>
+                            <td className="border border-gray-300 p-2">{user.name}</td>
+                            <td className="border border-gray-300 p-2">{user.email}</td>
+                            <td className="border border-gray-300 p-2">
                                 <select
                                     value={user.role}
-                                    onChange={(e) => changeRole(user.id, e.target.value)}
+                                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                                    className="border rounded p-1"
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="ngo">NGO</option>
                                     <option value="volunteer">Volunteer</option>
                                 </select>
                             </td>
-                            <td>
-                                <button onClick={() => resetPassword(user.id)}>Reset Password</button>
-                                <button onClick={() => deleteUser(user.id)}>Delete</button>
+                            <td className="border border-gray-300 p-2">
+                                <button
+                                    onClick={() => handleDelete(user.id)}
+                                    className="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded"
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -109,3 +67,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

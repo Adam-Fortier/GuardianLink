@@ -4,31 +4,38 @@ import api from '../utils/api';
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage('');
+        setError('');
+
         try {
-            const res = await api.post('/forgot-password', { email });
-            setMessage(res.data);
+            await api.post('/auth/forgot-password', { email });
+            setMessage('Password reset link sent to your email.');
         } catch (err) {
-            console.error(err);
-            setMessage('Failed to send reset link.');
+            setError('Failed to send reset link. Please try again.');
         }
     };
 
     return (
-        <div>
+        <div className="container mt-5">
             <h1>Forgot Password</h1>
+            {message && <div className="alert alert-success">{message}</div>}
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <button type="submit">Send Reset Link</button>
+                <div className="mb-3">
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">Send Reset Link</button>
             </form>
-            {message && <p>{message}</p>}
         </div>
     );
 };

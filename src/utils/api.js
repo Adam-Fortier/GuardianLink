@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Create an axios instance
 const api = axios.create({
-    baseURL: 'http://localhost:8080', // Replace with your backend base URL
+    baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080', // Use environment variable or fallback to localhost
+    timeout: 10000, // Set a timeout for requests (10 seconds)
 });
 
 // Add a request interceptor to include authorization header
@@ -23,14 +24,65 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response, // If the response is successful, return it as is
     (error) => {
-        // Check if the error is due to an unauthorized request
-        if (error.response && error.response.status === 401) {
-            localStorage.clear(); // Clear stored user data
-            window.location.href = '/login'; // Redirect to login page
+        if (error.response) {
+            // Unauthorized (401) or Forbidden (403) error handling
+            if (error.response.status === 401 || error.response.status === 403) {
+                localStorage.clear(); // Clear stored user data
+                window.location.href = '/login'; // Redirect to login page
+            }
+            // Show error message for other statuses
+            console.error(
+                `API Error: ${error.response.status} - ${error.response.data.message || error.response.statusText}`
+            );
+        } else if (error.request) {
+            // Handle no response received from server
+            console.error('No response received from server:', error.request);
+        } else {
+            // Handle other errors
+            console.error('Error during request setup:', error.message);
         }
-        // Optionally, handle other errors here (e.g., show a toast message)
         return Promise.reject(error);
     }
 );
+
+// Function to perform GET requests
+api.getRequest = async (url, config = {}) => {
+    try {
+        const response = await api.get(url, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Function to perform POST requests
+api.postRequest = async (url, data, config = {}) => {
+    try {
+        const response = await api.post(url, data, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Function to perform PATCH requests
+api.patchRequest = async (url, data, config = {}) => {
+    try {
+        const response = await api.patch(url, data, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Function to perform DELETE requests
+api.deleteRequest = async (url, config = {}) => {
+    try {
+        const response = await api.delete(url, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export default api;
