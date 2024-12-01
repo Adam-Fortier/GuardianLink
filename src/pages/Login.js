@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn, setUser }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,6 +26,10 @@ const Login = () => {
 
             setSuccessMessage('Login successful!');
 
+            // Update state in App component
+            setIsLoggedIn(true);
+            setUser(response.data.user);
+
             // Redirect based on user role
             const role = response.data.user.role;
             if (role === 'admin') {
@@ -44,38 +48,54 @@ const Login = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h1>Login</h1>
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-            {successMessage && <div className="alert alert-success">{successMessage}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email:</label>
+        <div className="retro-container mt-12 mx-auto max-w-md p-6 border border-gray-400 rounded-lg bg-gray-900 text-white terminal-text">
+            <h1 className="text-4xl font-bold mb-6 terminal-heading">Login</h1>
+            {errorMessage && (
+                <div className="alert alert-danger bg-red-700 text-white font-bold p-2 rounded mb-4">
+                    {errorMessage}
+                </div>
+            )}
+            {successMessage && (
+                <div className="alert alert-success bg-green-700 text-white font-bold p-2 rounded mb-4">
+                    {successMessage}
+                </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="mb-4">
+                    <label htmlFor="email" className="block text-sm font-medium terminal-text">
+                        Email:
+                    </label>
                     <input
                         type="email"
                         id="email"
-                        className="form-control"
+                        className="w-full border border-gray-600 rounded p-2 bg-gray-800 text-white terminal-input"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
+                <div className="mb-4">
+                    <label htmlFor="password" className="block text-sm font-medium terminal-text">
+                        Password:
+                    </label>
                     <input
                         type="password"
                         id="password"
-                        className="form-control"
+                        className="w-full border border-gray-600 rounded p-2 bg-gray-800 text-white terminal-input"
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
-                <p className="mt-3">
-                    <a href="/forgot-password">Forgot Password?</a>
+                <button type="submit" className="retro-btn btn-primary w-full mt-4">
+                    Login
+                </button>
+                <p className="mt-6 text-center">
+                    <a href="/forgot-password" className="nav-link hover:text-yellow-400">
+                        Forgot Password?
+                    </a>
                 </p>
             </form>
         </div>
@@ -83,4 +103,3 @@ const Login = () => {
 };
 
 export default Login;
-

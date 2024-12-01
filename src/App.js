@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Components/Header';
 import Home from './pages/Home';
+import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import VolunteerList from './pages/VolunteerList';
@@ -10,11 +11,15 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
+import './index.css';
+import './App.css';
+
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
+    // Checking local storage for token and user data
     useEffect(() => {
         const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
@@ -29,7 +34,7 @@ const App = () => {
         localStorage.clear();
         setIsLoggedIn(false);
         setUser(null);
-        window.location.href = '/login'; // Redirect to login
+        window.location.replace('/login'); // Redirect to login page
     };
 
     return (
@@ -38,7 +43,8 @@ const App = () => {
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
@@ -66,4 +72,3 @@ const App = () => {
 };
 
 export default App;
-

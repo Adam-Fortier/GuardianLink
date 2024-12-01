@@ -22,11 +22,11 @@ const About = () => {
                 volunteers' expertise.
             </p>
             <h2 className="text-2xl font-bold mb-2">Partnerships</h2>
-            <ul className="list-disc pl-6">
-                <li>CyberSecure Initiative</li>
-                <li>Global Tech Volunteers</li>
-                <li>SafetyNet Alliance</li>
-            </ul>
+            <div className="partnerships-container">
+                <span className="partnership-item">CyberSecure Initiative</span>
+                <span className="partnership-item">Global Tech Volunteers</span>
+                <span className="partnership-item">SafetyNet Alliance</span>
+            </div>
         </div>
     );
 };

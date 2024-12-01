@@ -1,18 +1,226 @@
-.App {
-  text-align: center;
+/* Global Styles */
+:root {
+  --font-family: 'Console', monospace; /* Retro Console font (fallback) */
+  --primary-color: #4c8bf5; /* A neutral blue for buttons */
+  --secondary-color: #6c757d; /* Secondary theme color */
+  --header-color: #35425b; /* Header background color */
+  --highlight-color: #f5d742; /* Highlight color for nav */
+  --error-color: #b22222; /* Error message color */
+  --success-color: #28a745; /* Success message color */
+  --background-color: #f0f0f05b; /* Light grey for the main background */
+  --text-color: #1c1c1c; /* General text color */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  padding-top: 70px; /* Spacing for fixed header */
+  line-height: 1.5;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* General Button Styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #050505;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #376bbf;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #565e64;
+}
+
+/* Header Styles */
+.header {
+  background-color: var(--header-color);
+  color: white;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  transition: max-height 0.3s ease;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--highlight-color);
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  color: var(--highlight-color);
+}
+
+.logout-btn {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #d43f3f;
+}
+
+/* Hamburger Menu Styles */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .nav-links.show {
+    max-height: 300px;
+  }
+
+  .nav-link {
+    margin: 10px 0;
   }
 }
 
+/* Profile Page Styles */
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.profile-form input,
+.profile-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.profile-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.profile-form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile-form button:hover {
+  background-color: #376bbf;
+}
+
+.success-message {
+  color: var(--success-color);
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: var(--error-color);
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+}
+
+/* App Header */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,15 +232,38 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Login Page Styles */
+.login-container {
+  background-color: #d3d3d3; /* Light grey background for the login form */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-title {
+  color: var(--text-color);
+  background-color: #f0f0f0; /* Light grey background */
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* About Us Page Partnership Section */
+.partnership-list {
+  display: flex;
+  gap: 50px; /* Increased gap to space out the logos more comfortably */
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 20px;
+}
+
+.partnership-item {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 20px;
+  background-color: #ffffff; /* A distinct background color for spacing */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
 }

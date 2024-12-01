@@ -6,7 +6,7 @@ const api = axios.create({
     timeout: 10000, // Set a timeout for requests (10 seconds)
 });
 
-// Add a request interceptor to include authorization header
+// Add a request interceptor to include the authorization header
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token'); // Retrieve token from local storage
@@ -45,8 +45,8 @@ api.interceptors.response.use(
     }
 );
 
-// Function to perform GET requests
-api.getRequest = async (url, config = {}) => {
+// API utility functions
+const getRequest = async (url, config = {}) => {
     try {
         const response = await api.get(url, config);
         return response.data;
@@ -55,8 +55,7 @@ api.getRequest = async (url, config = {}) => {
     }
 };
 
-// Function to perform POST requests
-api.postRequest = async (url, data, config = {}) => {
+const postRequest = async (url, data, config = {}) => {
     try {
         const response = await api.post(url, data, config);
         return response.data;
@@ -65,8 +64,7 @@ api.postRequest = async (url, data, config = {}) => {
     }
 };
 
-// Function to perform PATCH requests
-api.patchRequest = async (url, data, config = {}) => {
+const patchRequest = async (url, data, config = {}) => {
     try {
         const response = await api.patch(url, data, config);
         return response.data;
@@ -75,8 +73,7 @@ api.patchRequest = async (url, data, config = {}) => {
     }
 };
 
-// Function to perform DELETE requests
-api.deleteRequest = async (url, config = {}) => {
+const deleteRequest = async (url, config = {}) => {
     try {
         const response = await api.delete(url, config);
         return response.data;
@@ -85,4 +82,11 @@ api.deleteRequest = async (url, config = {}) => {
     }
 };
 
-export default api;
+// Export the axios instance and utility functions
+export {
+    api as default,
+    getRequest,
+    postRequest,
+    patchRequest,
+    deleteRequest
+};
