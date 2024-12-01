@@ -7,8 +7,11 @@
   --highlight-color: #f5d742; /* Highlight color for nav */
   --error-color: #b22222; /* Error message color */
   --success-color: #28a745; /* Success message color */
-  --background-color: #f0f0f05b; /* Light grey for the main background */
-  --text-color: #1c1c1c; /* General text color */
+  --background-color: #f0f0f0; /* Light grey for the main background */
+  --text-color: #000000; /* Black for general text color */
+  --input-background: #ffffff; /* White background for inputs */
+  --input-border-color: #ccc; /* Light border for inputs */
+  --input-text-color: #000000; /* Black text color for inputs */
 }
 
 body {
@@ -19,17 +22,25 @@ body {
   padding: 0;
   padding-top: 70px; /* Spacing for fixed header */
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* General Button Styles */
 .btn-primary {
   background-color: var(--primary-color);
-  color: #050505;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
+  border-radius: 8px;
+  padding: 12px 24px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 15px; /* Increased spacing between buttons */
 }
 
 .btn-primary:hover {
@@ -40,7 +51,8 @@ body {
   background-color: var(--secondary-color);
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  border-radius: 8px;
+  padding: 12px 24px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -150,11 +162,11 @@ body {
 /* Profile Page Styles */
 .profile-container {
   max-width: 600px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -165,18 +177,22 @@ body {
 
 .profile-form label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-weight: bold;
+  color: var(--text-color);
 }
 
 .profile-form input,
 .profile-form textarea {
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  border: 1px solid var(--input-border-color);
   border-radius: 4px;
+  background-color: var(--input-background);
+  color: var(--input-text-color);
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .profile-form textarea {
@@ -187,13 +203,14 @@ body {
 .profile-form button {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .profile-form button:hover {
@@ -212,6 +229,7 @@ body {
   margin-bottom: 15px;
 }
 
+/* Spinner */
 .spinner {
   display: flex;
   justify-content: center;
@@ -220,50 +238,61 @@ body {
   font-size: 18px;
 }
 
-/* App Header */
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Login and Register Page Styles */
+.login-container,
+.register-container {
+  background-color: var(--background-color);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  max-width: 400px;
 }
 
-/* Login Page Styles */
-.login-container {
-  background-color: #d3d3d3; /* Light grey background for the login form */
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.login-title {
+.login-title,
+.register-title {
   color: var(--text-color);
-  background-color: #f0f0f0; /* Light grey background */
+  background-color: #f0f0f0;
   padding: 10px;
   border-radius: 4px;
+  text-align: center;
 }
 
 /* About Us Page Partnership Section */
 .partnership-list {
   display: flex;
-  gap: 50px; /* Increased gap to space out the logos more comfortably */
+  gap: 60px;
   flex-wrap: wrap;
   justify-content: center;
   list-style: none;
   padding-left: 0;
-  margin-top: 20px;
+  margin-top: 100px; /* Increased top margin to add more space below the "Partnerships" title */
 }
 
 .partnership-item {
   font-size: 1rem;
   font-weight: bold;
   padding: 20px;
-  background-color: #ffffff; /* A distinct background color for spacing */
+  background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 10px;
+  margin: 20px;
+  text-align: center;
+}
+
+/* Align all input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 4px;
+  background-color: var(--input-background);
+  color: var(--input-text-color); /* Ensure the text color is black for better contrast */
+  font-size: 14px;
+  box-sizing: border-box;
 }

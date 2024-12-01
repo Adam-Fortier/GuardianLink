@@ -7,11 +7,11 @@ const Register = () => {
     const location = useLocation();
     const [role, setRole] = useState('volunteer');
     const [formData, setFormData] = useState({
-        email: '',
-        password: '',
         firstName: '',
         lastName: '',
         organizationName: '',
+        email: '',
+        password: '',
         areasOfConcern: '',
         hoursAvailablePerWeek: '',
         criminalBackgroundCheck: null,
@@ -88,11 +88,11 @@ const Register = () => {
 
         // Prepare the data to be submitted
         const data = new FormData();
-        data.append('email', formData.email);
-        data.append('password', formData.password);
         data.append('role', role);
         data.append('firstName', formData.firstName);
         data.append('lastName', formData.lastName);
+        data.append('email', formData.email);
+        data.append('password', formData.password);
 
         if (role === 'ngo') {
             data.append('organizationName', formData.organizationName);
@@ -118,11 +118,11 @@ const Register = () => {
 
             // Clear the form after successful registration
             setFormData({
-                email: '',
-                password: '',
                 firstName: '',
                 lastName: '',
                 organizationName: '',
+                email: '',
+                password: '',
                 areasOfConcern: '',
                 hoursAvailablePerWeek: '',
                 criminalBackgroundCheck: null,
@@ -142,36 +142,6 @@ const Register = () => {
             {message && <p className="text-green-400 mb-4" role="alert">{message}</p>}
             {error && <p className="text-red-400 mb-4" role="alert">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-yellow-300">
-                        Email:
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
-                        required
-                        aria-required="true"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-yellow-300">
-                        Password:
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
-                        required
-                        aria-required="true"
-                    />
-                </div>
                 <div>
                     <label htmlFor="firstName" className="block text-sm font-medium text-yellow-300">
                         First Name:
@@ -196,6 +166,36 @@ const Register = () => {
                         type="text"
                         name="lastName"
                         value={formData.lastName}
+                        onChange={handleInputChange}
+                        className="w-full border rounded p-2 bg-gray-800 text-white"
+                        required
+                        aria-required="true"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-yellow-300">
+                        Email:
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full border rounded p-2 bg-gray-800 text-white"
+                        required
+                        aria-required="true"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-yellow-300">
+                        Password:
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        value={formData.password}
                         onChange={handleInputChange}
                         className="w-full border rounded p-2 bg-gray-800 text-white"
                         required

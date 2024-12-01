@@ -11,15 +11,13 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap should be imported before custom CSS to allow overrides
 import './App.css';
-
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-    // Checking local storage for token and user data
     useEffect(() => {
         const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
