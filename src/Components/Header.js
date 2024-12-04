@@ -1,23 +1,28 @@
+// Header.js
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+// Header Component with navigation links
 const Header = ({ isLoggedIn, role, onLogout }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
+    // Toggles the mobile menu open/close state
     const toggleMenu = () => setMenuOpen(!menuOpen);
+
+    // Closes the mobile menu when a link is clicked
     const handleLinkClick = () => setMenuOpen(false);
 
     return (
         <header className="header fixed-header">
             <div className="header-content container">
-                {/* Logo */}
+                {/* Logo and link to home */}
                 <Link to="/" className="logo">GuardianLink</Link>
 
-                {/* Hamburger Menu Button for Mobile */}
+                {/* Hamburger button to open/close mobile menu */}
                 <button className="menu-btn" onClick={toggleMenu}>☰</button>
 
-                {/* Navigation Links */}
+                {/* Navigation links */}
                 <nav className={`nav-links ${menuOpen ? 'show' : ''}`}>
                     <Link
                         to="/"
@@ -35,6 +40,7 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
                     </Link>
                     {!isLoggedIn ? (
                         <>
+                            {/* Links for not logged-in users */}
                             <Link
                                 to="/login"
                                 className={`nav-link ${location.pathname === '/login' ? 'active' : ''}`}
@@ -52,6 +58,7 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
                         </>
                     ) : (
                         <>
+                            {/* Links for logged-in users, customized by role */}
                             {role === 'ngo' && (
                                 <Link
                                     to="/volunteers"
@@ -86,6 +93,7 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
                             >
                                 Profile
                             </Link>
+                            {/* Logout button */}
                             <button
                                 className="logout-btn"
                                 onClick={() => {

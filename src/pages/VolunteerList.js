@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 
+// component for displaying list of volunteers (accessible by NGOs)
 const VolunteerList = () => {
     const [volunteers, setVolunteers] = useState([]);
     const [error, setError] = useState('');
 
+    // Fetch volunteers when the component mounts
     useEffect(() => {
-        // Fetch volunteers when the component mounts
         const fetchVolunteers = async () => {
             try {
                 console.log('Fetching volunteers...');
                 const response = await api.get('/volunteers', {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure JWT token is passed
                     }
                 });
                 setVolunteers(response.data);

@@ -9,12 +9,9 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                console.log('Fetching profile data...');
-                const response = await api.get('/auth/profile'); // Adjusted endpoint
-                console.log('Profile data fetched:', response.data);
+                const response = await api.get('/auth/profile');
                 setProfile(response.data);
             } catch (err) {
-                console.error('Failed to fetch profile:', err);
                 setError('Failed to fetch profile.');
             }
         };
@@ -25,12 +22,10 @@ const Profile = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            console.log('Updating profile:', profile);
-            await api.patch('/auth/profile', profile); // Adjusted endpoint
+            await api.patch('/auth/profile', profile);
             setMessage('Profile updated successfully!');
             setError('');
         } catch (err) {
-            console.error('Failed to update profile:', err);
             setMessage('');
             setError('Failed to update profile.');
         }
@@ -39,7 +34,6 @@ const Profile = () => {
     const handleDeleteProfile = async () => {
         if (window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
             try {
-                console.log('Deleting profile...');
                 await api.delete('/auth/delete-profile');
                 setMessage('Profile deleted successfully.');
                 setTimeout(() => {
@@ -47,7 +41,6 @@ const Profile = () => {
                     window.location.href = '/login';
                 }, 1500);
             } catch (err) {
-                console.error('Failed to delete profile:', err);
                 setMessage('');
                 setError('Failed to delete profile.');
             }
@@ -55,105 +48,98 @@ const Profile = () => {
     };
 
     if (error) {
-        return <p className="alert alert-danger bg-red-700 text-white font-bold p-2 rounded mb-4 terminal-text">{error}</p>;
+        return <p className="alert alert-danger">{error}</p>;
     }
 
     if (!profile) {
-        return <p className="text-yellow-400 text-center mt-4 terminal-text">Loading...</p>;
+        return <p className="loading-message">Loading...</p>;
     }
 
     return (
-        <div className="retro-container max-w-3xl mx-auto p-6 border border-gray-400 rounded-lg bg-gray-900 text-white terminal-text">
-            <h1 className="text-4xl font-bold mb-6 terminal-heading">Profile</h1>
-            {message && <p className="bg-green-600 text-white font-bold p-2 rounded mb-4 terminal-text">{message}</p>}
-            <form onSubmit={handleUpdate} className="space-y-6">
-                <div>
-                    <label className="block text-sm font-bold mb-2">First Name:</label>
-                    <input
-                        type="text"
-                        value={profile.firstName || ''}
-                        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                        className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-bold mb-2">Last Name:</label>
-                    <input
-                        type="text"
-                        value={profile.lastName || ''}
-                        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                        className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-bold mb-2">Email:</label>
-                    <input
-                        type="email"
-                        value={profile.email || ''}
-                        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                        className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                    />
-                </div>
+        <section className="profile-container">
+            <h1>Profile</h1>
+            {message && <p className="success-message">{message}</p>}
+            <form className="profile-form" onSubmit={handleUpdate}>
+                <label htmlFor="first-name">First Name:</label>
+                <input
+                    type="text"
+                    id="first-name"
+                    value={profile.firstName || ''}
+                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                    placeholder="Enter your first name"
+                />
+
+                <label htmlFor="last-name">Last Name:</label>
+                <input
+                    type="text"
+                    id="last-name"
+                    value={profile.lastName || ''}
+                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                    placeholder="Enter your last name"
+                />
+
+                <label htmlFor="email">Email:</label>
+                <input
+                    type="email"
+                    id="email"
+                    value={profile.email || ''}
+                    onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                    placeholder="Enter your email"
+                />
+
                 {profile.role === 'ngo' && (
                     <>
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Organization Name:</label>
-                            <input
-                                type="text"
-                                value={profile.organizationName || ''}
-                                onChange={(e) => setProfile({ ...profile, organizationName: e.target.value })}
-                                className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Areas of Concern:</label>
-                            <input
-                                type="text"
-                                value={profile.areasOfConcern || ''}
-                                onChange={(e) => setProfile({ ...profile, areasOfConcern: e.target.value })}
-                                className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                            />
-                        </div>
+                        <label htmlFor="organization-name">Organization Name:</label>
+                        <input
+                            type="text"
+                            id="organization-name"
+                            value={profile.organizationName || ''}
+                            onChange={(e) => setProfile({ ...profile, organizationName: e.target.value })}
+                            placeholder="Enter organization name"
+                        />
+
+                        <label htmlFor="areas-of-concern">Areas of Concern:</label>
+                        <input
+                            type="text"
+                            id="areas-of-concern"
+                            value={profile.areasOfConcern || ''}
+                            onChange={(e) => setProfile({ ...profile, areasOfConcern: e.target.value })}
+                            placeholder="Enter areas of concern"
+                        />
                     </>
                 )}
+
                 {profile.role === 'volunteer' && (
                     <>
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Hours Available Per Week:</label>
-                            <input
-                                type="number"
-                                value={profile.hoursAvailable || ''}
-                                onChange={(e) => setProfile({ ...profile, hoursAvailable: e.target.value })}
-                                className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Skills:</label>
-                            <input
-                                type="text"
-                                value={profile.skills || ''}
-                                onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
-                                className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white"
-                            />
-                        </div>
+                        <label htmlFor="hours-available">Hours Available Per Week:</label>
+                        <input
+                            type="number"
+                            id="hours-available"
+                            value={profile.hoursAvailable || ''}
+                            onChange={(e) => setProfile({ ...profile, hoursAvailable: e.target.value })}
+                            placeholder="Enter hours available"
+                        />
+
+                        <label htmlFor="skills">Skills:</label>
+                        <input
+                            type="text"
+                            id="skills"
+                            value={profile.skills || ''}
+                            onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
+                            placeholder="Enter your skills"
+                        />
                     </>
                 )}
-                <button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-                >
+
+                <button type="submit" className="btn-primary">
                     Update Profile
                 </button>
             </form>
-            <button
-                onClick={handleDeleteProfile}
-                className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
+            <button onClick={handleDeleteProfile} className="delete-profile-btn">
                 Delete Profile
             </button>
-        </div>
+        </section>
     );
 };
 
 export default Profile;
-

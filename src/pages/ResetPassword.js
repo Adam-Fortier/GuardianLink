@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import api from '../utils/api';
 import { useLocation } from 'react-router-dom';
 
+// Reset Password component for handling password reset with token
 const ResetPassword = () => {
     const location = useLocation();
-    const token = new URLSearchParams(location.search).get('token');
+    const token = new URLSearchParams(location.search).get('token'); // Extract token from query params
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
+    // Handle the submission of the password reset form
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
         setError('');
 
         try {
+            // Make API call to reset the password
             await api.post('/auth/reset-password', { token, newPassword });
             setMessage('Password reset successful!');
         } catch (err) {

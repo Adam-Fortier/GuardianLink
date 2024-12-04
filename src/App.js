@@ -11,28 +11,31 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap should be imported before custom CSS to allow overrides
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import './App.css'; // Import the CSS file for styling
 
+// Main app component
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
+    // On initial load, checking for token and user in localStorage to restore session
     useEffect(() => {
         const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
         
         if (token && storedUser) {
             setIsLoggedIn(true);
-            setUser(JSON.parse(storedUser)); // Parse user data from localStorage
+            setUser(JSON.parse(storedUser));
         }
     }, []);
 
+    // Handling logout functionality
     const handleLogout = () => {
         localStorage.clear();
         setIsLoggedIn(false);
         setUser(null);
-        window.location.replace('/login'); // Redirect to login page
+        window.location.replace('/login');
     };
 
     return (

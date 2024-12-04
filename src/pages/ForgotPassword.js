@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import api from '../utils/api';
 
+// Forgot Password component to handle password reset requests
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
+    // Handle the submission of the forgot password form
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
         setError('');
 
         try {
+            // Make API call to initiate password reset
             await api.post('/auth/forgot-password', { email });
             setMessage('Password reset link sent to your email.');
         } catch (err) {
@@ -41,3 +44,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 
+// NGOList component for displaying list of NGOs (accessible by volunteers)
 const NGOList = () => {
     const [ngos, setNGOs] = useState([]);
     const [error, setError] = useState('');
 
+    // Fetch NGOs when the component mounts
     useEffect(() => {
         const fetchNGOs = async () => {
             try {

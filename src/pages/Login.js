@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 
+// Login Component for user authentication
 const Login = ({ setIsLoggedIn, setUser }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -9,13 +10,15 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    // Handle the submission of the login form
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
         setSuccessMessage('');
 
         try {
-            const response = await axios.post('http://localhost:8080/auth/login', {
+            // Make API call to login user
+            const response = await api.post('/auth/login', {
                 email,
                 password,
             });
@@ -48,48 +51,52 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     };
 
     return (
-        <div className="retro-container mt-12 mx-auto max-w-md p-6 border border-gray-400 rounded-lg bg-gray-900 text-white terminal-text">
-            <h1 className="text-4xl font-bold mb-6 terminal-heading">Login</h1>
+        <div className="login-container max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+            <h1 className="login-title text-3xl font-bold text-black mb-6 text-center">
+                Login
+            </h1>
             {errorMessage && (
-                <div className="alert alert-danger bg-red-700 text-white font-bold p-2 rounded mb-4">
+                <div className="alert alert-danger error-message p-2 rounded mb-4">
                     {errorMessage}
                 </div>
             )}
             {successMessage && (
-                <div className="alert alert-success bg-green-700 text-white font-bold p-2 rounded mb-4">
+                <div className="alert alert-success success-message p-2 rounded mb-4">
                     {successMessage}
                 </div>
             )}
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-sm font-medium terminal-text">
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <div className="input-container">
+                    <label htmlFor="email" className="form-label text-black">
                         Email:
                     </label>
                     <input
                         type="email"
                         id="email"
-                        className="w-full border border-gray-600 rounded p-2 bg-gray-800 text-white terminal-input"
+                        name="email"
+                        className="form-input"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium terminal-text">
+                <div className="input-container">
+                    <label htmlFor="password" className="form-label text-black">
                         Password:
                     </label>
                     <input
                         type="password"
                         id="password"
-                        className="w-full border border-gray-600 rounded p-2 bg-gray-800 text-white terminal-input"
+                        name="password"
+                        className="form-input"
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit" className="retro-btn btn-primary w-full mt-4">
+                <button type="submit" className="btn-primary w-full mt-4">
                     Login
                 </button>
                 <p className="mt-6 text-center">

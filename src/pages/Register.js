@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 
+// Register component to handle user registration
 const Register = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,18 +21,16 @@ const Register = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
-    // Set role from location state if provided
+    // Prepopulate the role if provided from navigation
     useEffect(() => {
         if (location.state && location.state.role) {
             setRole(location.state.role);
         }
     }, [location.state]);
 
-    // Handle role change (volunteer or NGO)
+    // Handle changes in role selection
     const handleRoleChange = (e) => {
         setRole(e.target.value);
-        console.log('Role selected:', e.target.value);
-        // Reset relevant fields when switching roles
         setFormData((prevData) => ({
             ...prevData,
             organizationName: '',
@@ -42,25 +41,25 @@ const Register = () => {
         }));
     };
 
-    // Handle input changes for text fields
+    // Handle form field input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Handle file change for the criminal background check and resume
+    // Handle file inputs for upload fields
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         setFormData({ ...formData, [name]: files[0] });
     };
 
-    // Submit form data
+    // Handle registration form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
         setError('');
 
-        // Custom validation
+        // Custom validation for required fields
         if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
             setError('Please fill in all required fields.');
             return;
@@ -86,7 +85,7 @@ const Register = () => {
             }
         }
 
-        // Prepare the data to be submitted
+        // Prepare form data for submission
         const data = new FormData();
         data.append('role', role);
         data.append('firstName', formData.firstName);
@@ -107,16 +106,15 @@ const Register = () => {
             }
         }
 
+        // API call to register the user
         try {
-            const response = await api.post('/auth/register', data, {
+            await api.post('/auth/register', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage('Registration successful!');
-            console.log('Registration successful!', response.data);
 
-            // Clear the form after successful registration
+            setMessage('Registration successful!');
             setFormData({
                 firstName: '',
                 lastName: '',
@@ -131,172 +129,182 @@ const Register = () => {
             setRole('volunteer'); // Reset role to default
             navigate('/login');
         } catch (err) {
-            console.error('Error during registration:', err.response?.data || err.message);
             setError('Registration failed. Please try again.');
         }
     };
 
     return (
         <div className="retro-container max-w-lg mx-auto p-6 border border-gray-400 rounded-lg bg-gray-900 text-white terminal-text">
-            <h1 className="text-3xl font-bold mb-4 terminal-heading">Register</h1>
-            {message && <p className="text-green-400 mb-4" role="alert">{message}</p>}
-            {error && <p className="text-red-400 mb-4" role="alert">{error}</p>}
-            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-                <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-yellow-300">
+            <h1 className="text-3xl font-bold mb-6">Register</h1>
+            {message && (
+                <div className="alert alert-success bg-green-700 text-white font-bold p-2 rounded mb-4">
+                    {message}
+                </div>
+            )}
+            {error && (
+                <div className="alert alert-danger bg-red-700 text-white font-bold p-2 rounded mb-4">
+                    {error}
+                </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6 register-form" noValidate>
+                <div className="input-container">
+                    <label htmlFor="firstName" className="form-label">
                         First Name:
                     </label>
                     <input
-                        id="firstName"
                         type="text"
+                        id="firstName"
                         name="firstName"
+                        className="form-input"
+                        placeholder="Enter your first name"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
                         required
-                        aria-required="true"
                     />
                 </div>
-                <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-yellow-300">
+                <div className="input-container">
+                    <label htmlFor="lastName" className="form-label">
                         Last Name:
                     </label>
                     <input
-                        id="lastName"
                         type="text"
+                        id="lastName"
                         name="lastName"
+                        className="form-input"
+                        placeholder="Enter your last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
                         required
-                        aria-required="true"
                     />
                 </div>
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-yellow-300">
+                <div className="input-container">
+                    <label htmlFor="email" className="form-label">
                         Email:
                     </label>
                     <input
-                        id="email"
                         type="email"
+                        id="email"
                         name="email"
+                        className="form-input"
+                        placeholder="Enter your email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
                         required
-                        aria-required="true"
                     />
                 </div>
-                <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-yellow-300">
+                <div className="input-container">
+                    <label htmlFor="password" className="form-label">
                         Password:
                     </label>
                     <input
-                        id="password"
                         type="password"
+                        id="password"
                         name="password"
+                        className="form-input"
+                        placeholder="Enter your password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
                         required
-                        aria-required="true"
                     />
                 </div>
-                <div>
-                    <label htmlFor="role" className="block text-sm font-medium text-yellow-300">
+                <div className="input-container">
+                    <label htmlFor="role" className="form-label">
                         Role:
                     </label>
                     <select
                         id="role"
+                        name="role"
+                        className="form-input"
                         value={role}
                         onChange={handleRoleChange}
-                        className="w-full border rounded p-2 bg-gray-800 text-white"
                         required
-                        aria-required="true"
                     >
                         <option value="volunteer">Volunteer</option>
                         <option value="ngo">NGO</option>
                     </select>
                 </div>
+
                 {role === 'ngo' && (
                     <>
-                        <div>
-                            <label htmlFor="organizationName" className="block text-sm font-medium text-yellow-300">
+                        <div className="input-container">
+                            <label htmlFor="organizationName" className="form-label">
                                 Organization Name:
                             </label>
                             <input
-                                id="organizationName"
                                 type="text"
+                                id="organizationName"
                                 name="organizationName"
+                                className="form-input"
+                                placeholder="Enter organization name"
                                 value={formData.organizationName}
                                 onChange={handleInputChange}
-                                className="w-full border rounded p-2 bg-gray-800 text-white"
                                 required
-                                aria-required="true"
                             />
                         </div>
-                        <div>
-                            <label htmlFor="areasOfConcern" className="block text-sm font-medium text-yellow-300">
+                        <div className="input-container">
+                            <label htmlFor="areasOfConcern" className="form-label">
                                 Areas of Concern:
                             </label>
                             <textarea
                                 id="areasOfConcern"
                                 name="areasOfConcern"
+                                className="form-input"
+                                placeholder="Describe your areas of concern"
                                 value={formData.areasOfConcern}
                                 onChange={handleInputChange}
-                                className="w-full border rounded p-2 bg-gray-800 text-white"
                                 required
-                                aria-required="true"
                             />
                         </div>
                     </>
                 )}
+
                 {role === 'volunteer' && (
                     <>
-                        <div>
-                            <label htmlFor="hoursAvailablePerWeek" className="block text-sm font-medium text-yellow-300">
+                        <div className="input-container">
+                            <label htmlFor="hoursAvailablePerWeek" className="form-label">
                                 Hours Available Per Week:
                             </label>
                             <input
-                                id="hoursAvailablePerWeek"
                                 type="number"
+                                id="hoursAvailablePerWeek"
                                 name="hoursAvailablePerWeek"
+                                className="form-input"
+                                placeholder="Enter hours available"
                                 value={formData.hoursAvailablePerWeek}
                                 onChange={handleInputChange}
-                                className="w-full border rounded p-2 bg-gray-800 text-white"
                                 required
-                                aria-required="true"
                             />
                         </div>
-                        <div>
-                            <label htmlFor="criminalBackgroundCheck" className="block text-sm font-medium text-yellow-300">
+                        <div className="input-container">
+                            <label htmlFor="criminalBackgroundCheck" className="form-label">
                                 Criminal Background Check:
                             </label>
                             <input
-                                id="criminalBackgroundCheck"
                                 type="file"
+                                id="criminalBackgroundCheck"
                                 name="criminalBackgroundCheck"
+                                className="form-input"
                                 onChange={handleFileChange}
-                                className="w-full border rounded p-2 bg-gray-800 text-white"
+                                required
                             />
                         </div>
-                        <div>
-                            <label htmlFor="resume" className="block text-sm font-medium text-yellow-300">
+                        <div className="input-container">
+                            <label htmlFor="resume" className="form-label">
                                 Resume:
                             </label>
                             <input
-                                id="resume"
                                 type="file"
+                                id="resume"
                                 name="resume"
+                                className="form-input"
                                 onChange={handleFileChange}
-                                className="w-full border rounded p-2 bg-gray-800 text-white"
                                 required
-                                aria-required="true"
                             />
                         </div>
                     </>
                 )}
-                <button type="submit" className="btn btn-primary bg-yellow-500 text-black hover:bg-yellow-600 p-2 rounded mt-4">
+
+                <button type="submit" className="btn-primary w-full mt-4">
                     Register
                 </button>
             </form>

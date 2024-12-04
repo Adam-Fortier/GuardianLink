@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 
+// admin-related activities (creating, managing users)
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({
@@ -11,10 +12,12 @@ const AdminDashboard = () => {
         lastName: '',
     });
 
+    // Fetch all users on component mount
     useEffect(() => {
         fetchUsers();
     }, []);
 
+    // Fetch users from the server
     const fetchUsers = async () => {
         try {
             const res = await api.get('/admin/users');
@@ -65,7 +68,6 @@ const AdminDashboard = () => {
                     'Content-Type': 'application/json',
                 },
             });
-            // Update the UI after a successful role change
             setUsers(users.map((user) => (user.id === id ? { ...user, role } : user)));
             alert('User role updated successfully');
         } catch (err) {
