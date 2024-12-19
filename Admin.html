@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuardianLink</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="/" class="logo">GuardianLink</a>
+      <nav id="nav-links" class="nav-links">
+        <a href="/home" class="nav-link">Home</a>
+        <a href="/about" class="nav-link">About Us</a>
+        <a href="/dashboard" class="nav-link">Admin Dashboard</a>
+        <a href="/profile" class="nav-link">Profile</a>
+      </nav>
+      <button id="menu-btn" class="menu-btn">&#9776;</button> <!-- Hamburger Menu -->
+    </div>
+  </header>
+
+  <!-- Register Section -->
+  <section id="register" class="form-container">
+    <h1 class="form-title">Register</h1>
+    <form>
+      <label for="first-name">First Name:</label>
+      <input type="text" id="first-name" placeholder="Enter your first name">
+
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" placeholder="Enter your last name">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email">
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter your password">
+
+      <label for="role">Role:</label>
+      <select id="role">
+        <option value="volunteer">Volunteer</option>
+        <option value="ngo">NGO</option>
+      </select>
+
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+  <!-- Login Section -->
+  <section id="login" class="form-container">
+    <h1 class="form-title">Login</h1>
+    <form>
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" placeholder="Enter your email">
+
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" placeholder="Enter your password">
+
+      <button type="submit">Login</button>
+      <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
+    </form>
+  </section>
+
+  <!-- Profile Section -->
+  <section class="profile-container">
+    <h1>Profile</h1>
+    <form class="profile-form">
+      <label for="first-name">First Name:</label>
+      <input type="text" id="first-name" placeholder="Enter your first name">
+
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" placeholder="Enter your last name">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email">
+
+      <button type="submit">Update Profile</button>
+    </form>
+    <button class="delete-profile-btn">Delete Profile</button>
+  </section>
+
+  <!-- Partnership Logos Section -->
+  <footer class="retro-container">
+    <h2>Partnerships</h2>
+    <div class="partnership-logos">
+      <img src="cyberSecureLogo.png" alt="CyberSecure Initiative Logo">
+      <img src="globalTechLogo.png" alt="Global Tech Volunteers Logo">
+      <img src="safetyNetLogo.png" alt="SafetyNet Alliance Logo">
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Hamburger Menu Toggle Script
+    const menuBtn = document.getElementById('menu-btn');
+    const navLinks = document.getElementById('nav-links');
+
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
